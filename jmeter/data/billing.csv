@@ -1,0 +1,6 @@
+cart_name,cart_address,cart_postal,cart_city,cart_country,cart_phone,cart_email
+John Doe,Main Street 1,01001,Kyiv,UA,380501234567,john.doe@email.com
+Jane Smith,Green Ave 12,79000,Lviv,UA,380671112233,jane.smith@email.com
+Oleksandr Petrenko,Shevchenko Blvd 45,49000,Dnipro,UA,380931234567,o.petrenko@email.com
+Anna Kowalska,Centralna 8,00-001,Warsaw,PL,48123123123,anna.k@email.com
+Markus Müller,Hauptstrasse 22,10115,Berlin,DE,491512345678,markus.mueller@email.com
