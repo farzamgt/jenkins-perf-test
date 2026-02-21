@@ -121,9 +121,9 @@
       </JDBCDataSource>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="S01_Add_Product_to_Cart_Place_Order">
-        <intProp name="ThreadGroup.num_threads">10</intProp>
-        <intProp name="ThreadGroup.ramp_time">60</intProp>
-        <longProp name="ThreadGroup.duration">120</longProp>
+        <intProp name="ThreadGroup.num_threads">3</intProp>
+        <intProp name="ThreadGroup.ramp_time">10</intProp>
+        <longProp name="ThreadGroup.duration">600</longProp>
         <longProp name="ThreadGroup.delay">0</longProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
