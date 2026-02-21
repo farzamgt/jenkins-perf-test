@@ -1,45 +1,25 @@
-pipeline {
-    agent any
+node {
 
-    stages {
-        stage('Check Files') {
-            steps {
-                echo "Listing workspace files:"
-                sh "ls -R $WORKSPACE"
-                echo "Checking JMeter script:"
-                sh "test -f $WORKSPACE/jmeter/test.jmx && echo 'test.jmx exists' || echo 'test.jmx missing'"
-            }
-        }
+    stage('clone git repo') {
+        git 'https://github.com/farzamgt/jenkins-perf-test.git'
+    }
 
-        stage('Run JMeter') {
-            steps {
-                sh """
-                mkdir -p $WORKSPACE/reports
-                docker run --rm \
-                  -v $WORKSPACE:/test \
-                  -v $WORKSPACE/reports:/reports \
-                  justb4/jmeter:5.5 \
-                  -n \
-                  -t /test/jmeter/test.jmx \
-                  -l /reports/results.jtl \
-                  -e -o /reports/html
-                """
-            }
-        }
+    stage('configure') {
+        bat "mkdir %WORKSPACE%\\%BUILD_NUMBER%"
+        bat "mkdir %WORKSPACE%\\reports"
+    }
 
-        stage('Publish Report') {
-            steps {
-                archiveArtifacts artifacts: 'reports/results.jtl'
+    stage('run test') {
+        bat """
+        C:\\jmeter\\bin\\jmeter.bat -Jjmeter.save.saveservice.output_format=xml ^
+        -n -t %WORKSPACE%\\jmeter\\test.jmx ^
+        -l %WORKSPACE%\\reports\\JMeter.jtl ^
+        -e -o %WORKSPACE%\\reports\\HtmlReport
+        """
+    }
 
-                publishHTML([
-                    allowMissing: true,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'reports/html',
-                    reportFiles: 'index.html',
-                    reportName: 'JMeter Report'
-                ])
-            }
-        }
+    stage('publish results') {
+        bat "move %WORKSPACE%\\reports\\* %WORKSPACE%\\%BUILD_NUMBER%\\"
+        archiveArtifacts artifacts: "%BUILD_NUMBER%\\JMeter.jtl, %BUILD_NUMBER%\\HtmlReport\\**", fingerprint: true
     }
 }
