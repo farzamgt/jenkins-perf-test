@@ -5,21 +5,20 @@ node {
     }
 
     stage('configure') {
-        sh "mkdir -p ${WORKSPACE}/${BUILD_NUMBER}"
-        sh "mkdir -p ${WORKSPACE}/reports"
+        sh "mkdir -p ${WORKSPACE}/reports/run-${BUILD_NUMBER}"
     }
 
     stage('run test') {
+        def reportDir = "${WORKSPACE}/reports/run-${BUILD_NUMBER}"
         sh """
         jmeter -Jjmeter.save.saveservice.output_format=csv \
-        -n -t ${WORKSPACE}/jmeter/test.jmx \
-        -l ${WORKSPACE}/reports/JMeter.jtl \
-        -e -o ${WORKSPACE}/reports/HtmlReport
+               -n -t ${WORKSPACE}/jmeter/test.jmx \
+               -l ${reportDir}/JMeter.jtl \
+               -e -o ${reportDir}/HtmlReport
         """
     }
 
     stage('publish results') {
-        sh "mv ${WORKSPACE}/reports/* ${WORKSPACE}/${BUILD_NUMBER}/"
-        archiveArtifacts artifacts: "${BUILD_NUMBER}/JMeter.jtl, ${BUILD_NUMBER}/HtmlReport/**", fingerprint: true
+        archiveArtifacts artifacts: "reports/run-${BUILD_NUMBER}/JMeter.jtl, reports/run-${BUILD_NUMBER}/HtmlReport/**", fingerprint: true
     }
 }
