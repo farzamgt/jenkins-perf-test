@@ -11,7 +11,7 @@ node {
 
     stage('run test') {
         sh """
-        jmeter -Jjmeter.save.saveservice.output_format=xml \
+        jmeter -Jjmeter.save.saveservice.output_format=csv \
         -n -t ${WORKSPACE}/jmeter/test.jmx \
         -l ${WORKSPACE}/reports/JMeter.jtl \
         -e -o ${WORKSPACE}/reports/HtmlReport
