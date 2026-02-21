@@ -5,21 +5,21 @@ node {
     }
 
     stage('configure') {
-        bat "mkdir %WORKSPACE%\\%BUILD_NUMBER%"
-        bat "mkdir %WORKSPACE%\\reports"
+        sh "mkdir -p ${WORKSPACE}/${BUILD_NUMBER}"
+        sh "mkdir -p ${WORKSPACE}/reports"
     }
 
     stage('run test') {
-        bat """
-        C:\\jmeter\\bin\\jmeter.bat -Jjmeter.save.saveservice.output_format=xml ^
-        -n -t %WORKSPACE%\\jmeter\\test.jmx ^
-        -l %WORKSPACE%\\reports\\JMeter.jtl ^
-        -e -o %WORKSPACE%\\reports\\HtmlReport
+        sh """
+        /jmeter/bin/jmeter -Jjmeter.save.saveservice.output_format=xml \
+        -n -t ${WORKSPACE}/jmeter/test.jmx \
+        -l ${WORKSPACE}/reports/JMeter.jtl \
+        -e -o ${WORKSPACE}/reports/HtmlReport
         """
     }
 
     stage('publish results') {
-        bat "move %WORKSPACE%\\reports\\* %WORKSPACE%\\%BUILD_NUMBER%\\"
-        archiveArtifacts artifacts: "%BUILD_NUMBER%\\JMeter.jtl, %BUILD_NUMBER%\\HtmlReport\\**", fingerprint: true
+        sh "mv ${WORKSPACE}/reports/* ${WORKSPACE}/${BUILD_NUMBER}/"
+        archiveArtifacts artifacts: "${BUILD_NUMBER}/JMeter.jtl, ${BUILD_NUMBER}/HtmlReport/**", fingerprint: true
     }
 }
