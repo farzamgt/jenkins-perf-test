@@ -9,12 +9,14 @@ node {
     }
 
     stage('run test') {
-        def reportDir = "${WORKSPACE}/reports/run-${BUILD_NUMBER}"
         sh """
-        jmeter -Jjmeter.save.saveservice.output_format=csv \
-               -n -t ${WORKSPACE}/jmeter/test.jmx \
-               -l ${reportDir}/JMeter.jtl \
-               -e -o ${reportDir}/HtmlReport
+        jmeter \
+        -Jjmeter.save.saveservice.output_format=csv \
+        -Jjmeter.save.saveservice.default_connect_timeout=10000 \
+        -Jjmeter.save.saveservice.default_response_timeout=20000 \
+        -n -t ${WORKSPACE}/jmeter/test.jmx \
+        -l ${WORKSPACE}/reports/run-${BUILD_NUMBER}/JMeter.jtl \
+        -e -o ${WORKSPACE}/reports/run-${BUILD_NUMBER}/HtmlReport
         """
     }
 
