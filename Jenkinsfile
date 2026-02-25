@@ -10,10 +10,10 @@ node {
 
     stage('run test') {
         sh """
-        mvn gatling:test \
+        mvn clean install -U gatling:test \
         -Dusers=3 \
         -DrampUp=10 \
-        -DbaseUrl=http://localhost \
+        -DbaseUrl=http://wp:80 \
         -DassertionType=order
         """
     }
