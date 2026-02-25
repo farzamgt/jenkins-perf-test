@@ -9,13 +9,15 @@ node {
     }
 
     stage('run test') {
-        sh """
-        mvn clean install -U gatling:test \
-        -Dusers=3 \
-        -DrampUp=10 \
-        -DbaseUrl=http://wp:80 \
-        -DassertionType=order
-        """
+        dir("${WORKSPACE}/gatling-maven-plugin-demo-java") {
+            sh """
+            mvn clean install -U gatling:test \
+            -Dusers=3 \
+            -DrampUp=10 \
+            -DbaseUrl=http://wp:80 \
+            -DassertionType=order
+            """
+        }
     }
 
     stage('collect results') {
