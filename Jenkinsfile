@@ -22,7 +22,7 @@ node {
 
     stage('collect results') {
         sh """
-        cp -r ${WORKSPACE}/target/gatling ${WORKSPACE}/reports/run-${BUILD_NUMBER}/
+        cp -r ${WORKSPACE}/gatling/target/gatling ${WORKSPACE}/reports/run-${BUILD_NUMBER}/
         """
     }
 
