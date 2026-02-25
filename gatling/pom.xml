@@ -6,13 +6,13 @@
 
   <groupId>io.gatling.demo</groupId>
   <artifactId>gatling-maven-plugin-demo-java</artifactId>
-  <version>3.13.3</version>
+  <version>4.13.0</version>
 
   <properties>
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <gatling.version>${project.version}</gatling.version>
+    <gatling.version>4.13.0</gatling.version>
     <scala.version>2.13.12</scala.version>
 
     <gatling-maven-plugin.version>4.13.0</gatling-maven-plugin.version>
