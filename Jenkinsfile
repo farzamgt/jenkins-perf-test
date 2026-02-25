@@ -1,26 +1,31 @@
 node {
 
     stage('clone git repo') {
-        git branch: 'main', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
+        git branch: 'lighthouse', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
     }
 
     stage('configure') {
-        sh "mkdir -p ${WORKSPACE}/reports/run-${BUILD_NUMBER}"
+        sh """
+        mkdir -p ${WORKSPACE}/reports/lighthouse/run-${BUILD_NUMBER}
+        cd lighthouse
+        npm ci || npm install
+        """
     }
 
     stage('run test') {
         sh """
-        jmeter \
-        -Jjmeter.save.saveservice.output_format=csv \
-        -Jjmeter.save.saveservice.default_connect_timeout=10000 \
-        -Jjmeter.save.saveservice.default_response_timeout=20000 \
-        -n -t ${WORKSPACE}/jmeter/test.jmx \
-        -l ${WORKSPACE}/reports/run-${BUILD_NUMBER}/JMeter.jtl \
-        -e -o ${WORKSPACE}/reports/run-${BUILD_NUMBER}/HtmlReport
+        cd lighthouse
+        node orderFlow.js
+        """
+    }
+
+    stage('collect report') {
+        sh """
+        mv lighthouse/order-flow.html ${WORKSPACE}/reports/lighthouse/run-${BUILD_NUMBER}
         """
     }
 
     stage('publish results') {
-        archiveArtifacts artifacts: "reports/run-${BUILD_NUMBER}/JMeter.jtl, reports/run-${BUILD_NUMBER}/HtmlReport/**", fingerprint: true
+        archiveArtifacts artifacts: "reports/lighthouse/run-${BUILD_NUMBER}/*", fingerprint: true
     }
 }

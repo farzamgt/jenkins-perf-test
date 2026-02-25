@@ -1,0 +1,9 @@
+{
+  "name": "Test User",
+  "address": "Test street 1",
+  "postal": "01001",
+  "city": "Kyiv",
+  "country": "UA",
+  "phone": "+380991112233",
+  "email": "test.user@example.com"
+}
