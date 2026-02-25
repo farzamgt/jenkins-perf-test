@@ -8,7 +8,7 @@ node {
         sh """
         mkdir -p ${WORKSPACE}/reports/lighthouse/run-${BUILD_NUMBER}
         cd lighthouse
-        npm ci || npm install
+        npm install
         """
     }
 
