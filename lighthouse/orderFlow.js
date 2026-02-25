@@ -8,7 +8,7 @@ async function captureReport() {
   const { startFlow, desktopConfig } = lighthouse
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: ['--no-sandbox', '--disable-gpu']
   })
 
