@@ -6,12 +6,11 @@ node {
 
     stage('configure') {
         sh "mkdir -p ${WORKSPACE}/reports/run-${BUILD_NUMBER}"
-        sh "chmod +x mvnw"
     }
 
     stage('run test') {
         sh """
-        ./mvnw gatling:test \
+        mvn gatling:test \
         -Dusers=60 \
         -DrampUp=180 \
         -DbaseUrl=http://localhost \
