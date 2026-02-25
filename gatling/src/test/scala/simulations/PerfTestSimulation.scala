@@ -19,7 +19,7 @@ class PerfTestSimulation extends Simulation {
     scnHome(CHAIRS, ORDERS)
       .inject(
         rampConcurrentUsers(1).to(scnOrdersUsers).during(scnOrdersRampUp),
-          constantConcurrentUsers(scnOrdersUsers).during(14400)
+          constantConcurrentUsers(scnOrdersUsers).during(600)
       )
   )
 

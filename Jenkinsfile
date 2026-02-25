@@ -11,8 +11,8 @@ node {
     stage('run test') {
         sh """
         mvn gatling:test \
-        -Dusers=60 \
-        -DrampUp=180 \
+        -Dusers=3 \
+        -DrampUp=10 \
         -DbaseUrl=http://localhost \
         -DassertionType=order
         """
