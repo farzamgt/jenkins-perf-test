@@ -1,5 +1,8 @@
-const fs = require('fs')
-const puppeteer = require('puppeteer')
+// const fs = require('fs')
+// const puppeteer = require('puppeteer')
+
+import fs from 'fs';
+import puppeteer from 'puppeteer';
 
 const billingData = JSON.parse(fs.readFileSync('./billing-data.json', 'utf8'))
 
@@ -19,7 +22,7 @@ async function captureReport() {
   const baseUrl = 'http://wp:80'
 
   const flow = await startFlow(page, {
-    name: 'order-flow-5-iterations',
+    name: 'order-flow',
     config: desktopConfig,
     flags: { screenEmulation: { disabled: true } },
     configContext: {
@@ -29,7 +32,7 @@ async function captureReport() {
     }
   })
 
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 1; i++) {
     console.log(`===== ITERATION ${i} =====`)
 
     await flow.navigate(baseUrl, { stepName: `home ${i}` })
@@ -82,12 +85,12 @@ async function captureReport() {
   // REPORTS
 
   const htmlReport = await flow.generateReport({ format: 'html' })
-  fs.writeFileSync('order-flow-5-iterations.html', htmlReport)
+  fs.writeFileSync('order-flow.html', htmlReport)
 
   const flowResult = await flow.createFlowResult()
 
   fs.writeFileSync(
-    'order-flow-5-iterations.json',
+    'order-flow.json',
     JSON.stringify(flowResult, null, 2)
   )
 
@@ -142,9 +145,9 @@ async function captureReport() {
     JSON.stringify(summaryByPage, null, 2)
   )
 
-  console.log('Reports generated:')
-  console.log('- order-flow-5-iterations.html')
-  console.log('- order-flow-5-iterations.json')
+  console.log('Report generated:')
+  console.log('- order-flows.html')
+  console.log('- order-flow.json')
   console.log('- order-flow-aggregated-by-page.json')
 
   await browser.close()
