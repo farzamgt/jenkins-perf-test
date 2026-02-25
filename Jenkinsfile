@@ -9,7 +9,7 @@ node {
     }
 
     stage('run test') {
-        dir("${WORKSPACE}/gatling-maven-plugin-demo-java") {
+        dir("${WORKSPACE}/gatling") {
             sh """
             mvn clean install -U gatling:test \
             -Dusers=3 \
