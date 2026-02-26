@@ -1,34 +1,46 @@
-node {
+pipeline {
+    agent any
 
-    stage('clone git repo') {
-        git branch: 'gatling-test', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
+    environment {
+        REPORT_DIR = "${WORKSPACE}/reports/run-${BUILD_NUMBER}"
     }
 
-    stage('configure') {
-        sh "mkdir -p ${WORKSPACE}/reports/run-${BUILD_NUMBER}"
-    }
-
-    stage('run test') {
-        dir("${WORKSPACE}/gatling") {
-            docker.image('maven:3.9.6-eclipse-temurin-17').inside('--network pte-network') {
-                sh """
-                mvn clean install -U gatling:test \
-                -Dusers=3 \
-                -DrampUp=10 \
-                -DbaseUrl=http://wp \
-                -DassertionType=order
-                """
+    stages {
+        stage('Clone Git repo') {
+            steps {
+                git branch: 'gatling-test', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
             }
         }
-    }
 
-    stage('collect results') {
-        sh """
-        cp -r ${WORKSPACE}/gatling/target/gatling ${WORKSPACE}/reports/run-${BUILD_NUMBER}/
-        """
-    }
+        stage('Prepare report folder') {
+            steps {
+                sh "mkdir -p ${REPORT_DIR}"
+            }
+        }
 
-    stage('publish results') {
-        archiveArtifacts artifacts: "reports/run-${BUILD_NUMBER}/**", fingerprint: true
+        stage('Run Gatling tests') {
+            steps {
+                dir("${WORKSPACE}/gatling") {
+                    sh """
+                    docker run --rm \
+                        --network pte-network \
+                        -v ${WORKSPACE}/gatling:/tests \
+                        -v ${REPORT_DIR}:/tests/target/gatling \
+                        gatling/gatling:latest \
+                        mvn clean install -U gatling:test \
+                            -Dusers=3 \
+                            -DrampUp=10 \
+                            -DbaseUrl=http://wp:80 \
+                            -DassertionType=order
+                    """
+                }
+            }
+        }
+
+        stage('Publish results') {
+            steps {
+                archiveArtifacts artifacts: "reports/run-${BUILD_NUMBER}/**", fingerprint: true
+            }
+        }
     }
 }
