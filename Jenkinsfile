@@ -1,7 +1,7 @@
 node {
 
     stage('clone git repo') {
-        git branch: 'gatling', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
+        git branch: 'gatling-test', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
     }
 
     stage('configure') {
@@ -10,13 +10,15 @@ node {
 
     stage('run test') {
         dir("${WORKSPACE}/gatling") {
-            sh """
-            mvn clean install -U gatling:test \
-            -Dusers=3 \
-            -DrampUp=10 \
-            -DbaseUrl=http://wp:80 \
-            -DassertionType=order
-            """
+            docker.image('maven:3.9.6-eclipse-temurin-17').inside('--network pte-network') {
+                sh """
+                mvn clean install -U gatling:test \
+                -Dusers=3 \
+                -DrampUp=10 \
+                -DbaseUrl=http://wp \
+                -DassertionType=order
+                """
+            }
         }
     }
 
