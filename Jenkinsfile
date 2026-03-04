@@ -1,5 +1,4 @@
 pipeline {
-
     agent any
 
     parameters {
@@ -21,8 +20,7 @@ pipeline {
                 if not exist %WORKSPACE%\\reports\\lighthouse\\run-%BUILD_NUMBER% mkdir %WORKSPACE%\\reports\\lighthouse\\run-%BUILD_NUMBER%
                 cd lighthouse
                 set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-                npm install --legacy-peer-deps
-                npm install lodash
+                npm ci
                 """
             }
         }

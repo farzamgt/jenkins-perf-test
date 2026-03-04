@@ -2,8 +2,12 @@
   "name": "lighthouse-flow",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "test": "node orderFlow.js"
+  },
   "dependencies": {
     "lighthouse": "^11.0.0",
-    "puppeteer": "^21.0.0"
+    "puppeteer": "^21.0.0",
+    "lodash": "^4.17.21"
   }
 }
