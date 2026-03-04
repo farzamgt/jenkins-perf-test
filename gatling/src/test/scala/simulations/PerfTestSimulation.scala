@@ -8,7 +8,7 @@ import scenarios.EssentialsOrder.scnHome
 
 /*
 
-mvnw.cmd gatling:test -Dusers=60 -DrampUp=180 -DbaseUrl=http://localhost -DassertionType=order
+mvnw.cmd gatling:test -Dusers=5 -DrampUp=10 -Dduration=600 -DbaseUrl=http://localhost -DassertionType=order
 
  */
 

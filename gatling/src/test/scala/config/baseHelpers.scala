@@ -13,6 +13,7 @@ object baseHelpers {
   val ORDERS: Double = java.lang.Double.parseDouble(System.getProperty("ordersRatio", "0.3")) // Double to define percentage for orders
   val scnOrdersUsers: Int = Integer.parseInt(System.getProperty("users", "5")) // number of users
   val scnOrdersRampUp: Int = Integer.parseInt(System.getProperty("rampUp", "1")) // in seconds
+  val scnOrdersDuration: Int = Integer.parseInt(System.getProperty("duration", "1")) // in seconds
   val assertionType: String = System.getProperty("assertionType", "defaultAssertion") // to set assertion map
   val BASE_URL: String = System.getProperty("baseUrl", "http://localhost")
 
