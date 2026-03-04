@@ -28,7 +28,8 @@ pipeline {
             steps {
                 dir("gatling") {
                     bat """
-                    mvn clean install -U gatling:test ^
+                    mvn -U gatling:test ^
+                        -Dgatling.simulationClass=simulations.PerfTestSimulation ^
                         -Dusers=%USERS% ^
                         -DrampUp=%RAMPUP% ^
                         -Dduration=%DURATION% ^
