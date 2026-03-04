@@ -1,7 +1,7 @@
 node {
 
     stage('clone git repo') {
-        git 'https://github.com/farzamgt/jenkins-perf-test.git'
+        git branch: 'jmeter', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
     }
 
     stage('debug') {
