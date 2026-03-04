@@ -20,20 +20,20 @@ pipeline {
 
         stage('configure') {
             steps {
-                sh "mkdir -p ${WORKSPACE}/reports/run-${BUILD_NUMBER}"
+                bat "if not exist %WORKSPACE%\\reports\\run-%BUILD_NUMBER% mkdir %WORKSPACE%\\reports\\run-%BUILD_NUMBER%"
             }
         }
 
         stage('run test') {
             steps {
-                dir("${WORKSPACE}/gatling") {
-                    sh """
-                    mvn clean install -U gatling:test \
-                        -Dusers=${params.USERS} \
-                        -DrampUp=${params.RAMPUP} \
-                        -Dduration=${params.DURATION} \
-                        -DbaseUrl=${params.BASE_URL} \
-                        -DassertionType=${params.ASSERTION}
+                dir("%WORKSPACE%\\gatling") {
+                    bat """
+                    mvn clean install -U gatling:test ^
+                        -Dusers=%USERS% ^
+                        -DrampUp=%RAMPUP% ^
+                        -Dduration=%DURATION% ^
+                        -DbaseUrl=%BASE_URL% ^
+                        -DassertionType=%ASSERTION%
                     """
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
 
         stage('collect results') {
             steps {
-                sh "cp -r ${WORKSPACE}/gatling/target/gatling ${WORKSPACE}/reports/run-${BUILD_NUMBER}/"
+                bat "xcopy /E /I /Y %WORKSPACE%\\gatling\\target\\gatling %WORKSPACE%\\reports\\run-%BUILD_NUMBER%\\gatling"
             }
         }
 
