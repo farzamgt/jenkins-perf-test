@@ -26,7 +26,7 @@ pipeline {
 
         stage('run test') {
             steps {
-                dir("%WORKSPACE%\\gatling") {
+                dir("gatling") {
                     bat """
                     mvn clean install -U gatling:test ^
                         -Dusers=%USERS% ^
@@ -41,7 +41,7 @@ pipeline {
 
         stage('collect results') {
             steps {
-                bat "xcopy /E /I /Y %WORKSPACE%\\gatling\\target\\gatling %WORKSPACE%\\reports\\run-%BUILD_NUMBER%\\gatling"
+                bat "xcopy /E /I /Y gatling\\target\\gatling %WORKSPACE%\\reports\\run-%BUILD_NUMBER%\\gatling"
             }
         }
 
