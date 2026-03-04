@@ -1,37 +1,45 @@
-node {
+pipeline {
 
-    stage('clone git repo') {
-        git branch: 'jmeter', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
+    agent any
+
+    parameters {
+        string(name: 'USERS',    defaultValue: '5',  description: 'Number of virtual users')
+        string(name: 'RAMPUP',   defaultValue: '10',  description: 'Ramp-up time (seconds)')
+        string(name: 'DURATION', defaultValue: '30',  description: 'Test duration (seconds)')
     }
 
-    stage('debug') {
-        bat """
-        echo ==== DEBUG INFO ====
-        echo JMETER_HOME:
-        echo %JMETER_HOME%
-        echo.
-        echo PATH:
-        echo %PATH%
-        echo.
-        echo Where is jmeter:
-        where jmeter
-        """
-    }
+    stages {
 
-    stage('configure') {
-        bat "if not exist %WORKSPACE%\\%BUILD_NUMBER% mkdir %WORKSPACE%\\%BUILD_NUMBER%"
-    }
+        stage('clone git repo') {
+            steps {
+                git branch: 'jmeter', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
+            }
+        }
 
-    stage('run test') {
-        bat """
-        jmeter -n ^
-        -t %WORKSPACE%\\jmeter\\test.jmx ^
-        -l %WORKSPACE%\\%BUILD_NUMBER%\\JMeter.jtl ^
-        -e -o %WORKSPACE%\\%BUILD_NUMBER%\\HtmlReport
-        """
-    }
+        stage('configure') {
+            steps {
+                bat "if not exist %WORKSPACE%\\%BUILD_NUMBER% mkdir %WORKSPACE%\\%BUILD_NUMBER%"
+            }
+        }
 
-    stage('publish results') {
-        archiveArtifacts artifacts: "${BUILD_NUMBER}/JMeter.jtl, ${BUILD_NUMBER}/HtmlReport/**"
+        stage('run test') {
+            steps {
+                bat """
+                jmeter -n ^
+                -Jusers=${params.USERS} ^
+                -Jrampup=${params.RAMPUP} ^
+                -Jduration=${params.DURATION} ^
+                -t %WORKSPACE%\\jmeter\\test.jmx ^
+                -l %WORKSPACE%\\%BUILD_NUMBER%\\JMeter.jtl ^
+                -e -o %WORKSPACE%\\%BUILD_NUMBER%\\HtmlReport
+                """
+            }
+        }
+
+        stage('publish results') {
+            steps {
+                archiveArtifacts artifacts: "${BUILD_NUMBER}/JMeter.jtl, ${BUILD_NUMBER}/HtmlReport/**"
+            }
+        }
     }
 }
