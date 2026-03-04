@@ -1,26 +1,37 @@
 node {
 
     stage('clone git repo') {
-        git branch: 'main', url: 'https://github.com/farzamgt/jenkins-perf-test.git'
+        git 'https://github.com/farzamgt/jenkins-perf-test.git'
+    }
+
+    stage('debug') {
+        bat """
+        echo ==== DEBUG INFO ====
+        echo JMETER_HOME:
+        echo %JMETER_HOME%
+        echo.
+        echo PATH:
+        echo %PATH%
+        echo.
+        echo Where is jmeter:
+        where jmeter
+        """
     }
 
     stage('configure') {
-        bat "if not exist %WORKSPACE%\\reports\\run-%BUILD_NUMBER% mkdir %WORKSPACE%\\reports\\run-%BUILD_NUMBER%"
+        bat "if not exist %WORKSPACE%\\%BUILD_NUMBER% mkdir %WORKSPACE%\\%BUILD_NUMBER%"
     }
 
     stage('run test') {
         bat """
-        C:\\apache-jmeter\\bin\\jmeter.bat ^
-        -Jjmeter.save.saveservice.output_format=csv ^
-        -Jjmeter.save.saveservice.default_connect_timeout=10000 ^
-        -Jjmeter.save.saveservice.default_response_timeout=20000 ^
-        -n -t %WORKSPACE%\\jmeter\\test.jmx ^
-        -l %WORKSPACE%\\reports\\run-%BUILD_NUMBER%\\JMeter.jtl ^
-        -e -o %WORKSPACE%\\reports\\run-%BUILD_NUMBER%\\HtmlReport
+        jmeter -n ^
+        -t %WORKSPACE%\\jmeter\\test.jmx ^
+        -l %WORKSPACE%\\%BUILD_NUMBER%\\JMeter.jtl ^
+        -e -o %WORKSPACE%\\%BUILD_NUMBER%\\HtmlReport
         """
     }
 
     stage('publish results') {
-        archiveArtifacts artifacts: "reports/run-${BUILD_NUMBER}/JMeter.jtl, reports/run-${BUILD_NUMBER}/HtmlReport/**", fingerprint: true
+        archiveArtifacts artifacts: "${BUILD_NUMBER}/JMeter.jtl, ${BUILD_NUMBER}/HtmlReport/**"
     }
 }
