@@ -32,7 +32,9 @@ async function captureReport() {
     }
   })
 
-  for (let i = 1; i <= 1; i++) {
+  const iterations = parseInt(process.env.ITERATIONS || '1', 10)
+
+  for (let i = 1; i <= iterations; i++) {
     console.log(`===== ITERATION ${i} =====`)
 
     await flow.navigate(baseUrl, { stepName: `home ${i}` })
