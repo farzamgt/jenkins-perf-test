@@ -2,44 +2,43 @@
 
 This guide explains how to set up and run JMeter, Gatling, and Lighthouse tests using Jenkins.
 
-1. Install Jenkins
+## 1. Install Jenkins
 
-Download and install Jenkins on your local machine.
+- Download and install Jenkins on your local machine.
+- Start the Jenkins service.
 
-Start the Jenkins service.
-
-2. Sign in
+## 2. Sign in
 
 Open the initial admin password file:
 
+```
 C:\ProgramData\Jenkins\.jenkins\secrets\initialAdminPassword
+```
+
+## 3. Open Jenkins in Browser
+
+Navigate to: http://localhost:8080
 
 Use the password to log in as admin.
 
-3. Open Jenkins in Browser
+## 4. Create a Multibranch Pipeline
 
-Navigate to:
-
-http://localhost:8080
-
-4. Create a New Job
-
-Click New Item → choose Pipeline → give it a name → click OK.
-
-5. Configure Pipeline
-
-- Definition: Pipeline script from SCM
-
+- Click New Item -> choose Multibranch Pipeline -> give it a name -> click OK.
 - SCM: Git
+- Repository URL: `https://github.com/farzamgt/jenkins-perf-test.git`
+- Leave "Credentials" empty because the repo is public.
+- Save
 
-- Repository URL: https://github.com/farzamgt/jenkins-perf-test.git
+> Jenkins will automatically scan all branches and create jobs for each branch containing a `Jenkinsfile`.
 
-- Branch Specifier: */jmeter → JMeter test, */gatling → Gatling test, */lighthouse → Lighthouse test
+## 5. Build and Run Tests
 
-- Click Save.
+- Navigate to the branch job.
+- Click Build with Parameters.
+- Enter desired values (iterations, target URL, etc.) or use defaults.
+- Jenkins will execute the pipeline and save artifacts automatically.
 
-6. Build with Parameters
+## 6. Notes
 
-7. Notes
-
-For JMeter, make sure JMETER_HOME environment variable is set to your JMeter installation path.
+- For JMeter, make sure JMETER_HOME environment variable is set to your JMeter installation path.
+- Branches: Each branch has its own Jenkinsfile, parameters, and tests.
