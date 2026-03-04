@@ -19,7 +19,7 @@ async function captureReport() {
   await page.setViewport({ width: 1366, height: 768 })
   await page.setDefaultTimeout(15000)
 
-  const baseUrl = 'http://localhost:80'
+  const baseUrl = process.env.BASE_URL || 'http://localhost:80';
 
   const flow = await startFlow(page, {
     name: 'order-flow',
