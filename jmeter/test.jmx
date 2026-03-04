@@ -101,13 +101,13 @@
         <stringProp name="shareMode">shareMode.all</stringProp>
       </CSVDataSet>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration" enabled="true">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="connectionProperties"></stringProp>
         <stringProp name="dataSource">db</stringProp>
-        <stringProp name="dbUrl">jdbc:mysql://localhost:3306/exampledb?useSSL=false</stringProp>
+        <stringProp name="dbUrl">jdbc:mysql://localhost:3307/exampledb?useSSL=false</stringProp>
         <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
         <stringProp name="initQuery"></stringProp>
         <boolProp name="keepAlive">true</boolProp>
@@ -120,10 +120,10 @@
         <stringProp name="username">exampleuser</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="S01_Add_Product_to_Cart_Place_Order">
-        <intProp name="ThreadGroup.num_threads">3</intProp>
-        <intProp name="ThreadGroup.ramp_time">10</intProp>
-        <longProp name="ThreadGroup.duration">600</longProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="S01_Add_Product_to_Cart_Place_Order" enabled="false">
+        <stringProp name="ThreadGroup.num_threads">${__P(users,10)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampup,10)}</stringProp>
+        <stringProp name="ThreadGroup.duration">${__P(duration,600)}</stringProp>
         <longProp name="ThreadGroup.delay">0</longProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
@@ -134,7 +134,7 @@
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T01_Open_App">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T01_Open_App" enabled="true">
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -144,7 +144,7 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion">
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
             <boolProp name="XPath.negate">false</boolProp>
             <stringProp name="XPath.xpath">//h1[@class=&apos;entry-title&apos; and text()=&apos;All Products&apos;]</stringProp>
             <boolProp name="XPath.validate">false</boolProp>
@@ -155,7 +155,7 @@
           </XPathAssertion>
           <hashTree/>
         </hashTree>
-        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Flow Control Action">
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Flow Control Action" enabled="true">
           <intProp name="ActionProcessor.action">1</intProp>
           <intProp name="ActionProcessor.target">0</intProp>
           <stringProp name="ActionProcessor.duration">0</stringProp>
@@ -178,7 +178,7 @@
             <stringProp name="TestPlan.comments">Set</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="SC - Open Category">
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="SC - Open Category" enabled="true">
             <collectionProp name="ModuleController.node_path">
               <stringProp name="764597751">Test Plan</stringProp>
               <stringProp name="1636249736">Nopcommerce Test</stringProp>
@@ -332,7 +332,7 @@
           </FloatProperty>
         </ThroughputController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T08_Open_Cart">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T08_Open_Cart" enabled="true">
             <stringProp name="HTTPSampler.path">cart</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -405,7 +405,7 @@
             </ConstantTimer>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T09_Click_Place_Order">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T09_Click_Place_Order" enabled="true">
             <stringProp name="HTTPSampler.path">checkout</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -498,7 +498,7 @@ log.info(&quot;🚀 CHECKOUT BODY BUILT: &quot; + vars.get(&quot;checkoutBody&qu
             </UniformRandomTimer>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T10_Submit_Order">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T10_Submit_Order" enabled="true">
             <stringProp name="HTTPSampler.path">checkout</stringProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -617,7 +617,7 @@ vars.put(&quot;orderBody&quot;, body.toString())
           </hashTree>
         </hashTree>
       </hashTree>
-      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="tearDown Thread Group" enabled="false">
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="tearDown Thread Group">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -674,9 +674,9 @@ WHERE post_id NOT IN (
       </hashTree>
       <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="true"/>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SC - Open Category"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SC - Open Category" enabled="true"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T02_Open_Category">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T02_Open_Category" enabled="true">
             <stringProp name="HTTPSampler.path">${category}</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -711,7 +711,7 @@ WHERE post_id NOT IN (
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SC - Open Product Card" enabled="true"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T02_Open_Product_Card">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T02_Open_Product_Card" enabled="true">
             <stringProp name="HTTPSampler.path">products/${product}</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -746,7 +746,7 @@ WHERE post_id NOT IN (
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SC - Add Product to Cart" enabled="true"/>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T04_Add_Product_to_Cart">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="S01_T04_Add_Product_to_Cart" enabled="true">
             <stringProp name="HTTPSampler.path">wp-admin/admin-ajax.php</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
